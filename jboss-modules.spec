@@ -15,9 +15,7 @@ BuildArch:        noarch
 BuildRequires:    maven-local
 BuildRequires:    jboss-parent
 BuildRequires:    shrinkwrap
-%if 0%{?fedora}
 BuildRequires:    apiviz
-%endif
 
 %description
 Ths package contains A Modular Classloading System.
