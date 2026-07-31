@@ -3,8 +3,8 @@
 %global namedversion %{version}%{?namedreltag}
 
 Name:             jboss-modules
-Version:          1.3.0
-Release:          0.1%{namedreltag}.0%{?dist}
+Version:          2.1.6
+Release:          1%{namedreltag}.0%{?dist}
 Summary:          A Modular Classloading System
 License:          LGPLv2+
 URL:              https://github.com/jbossas/jboss-modules
@@ -27,7 +27,7 @@ Summary:          Javadocs for %{name}
 This package contains the API documentation for %{name}.
 
 %prep
-%setup -q -n jboss-modules-%{namedversion}
+%setup -q -n jboss-modules-2.1.6.Final
 
 # Conditionally remove dependency on apiviz
 if [ %{?rhel} ]; then
