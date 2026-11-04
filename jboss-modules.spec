@@ -1,104 +1,41 @@
-%{?_javapackages_macros:%_javapackages_macros}
-%global namedreltag .Beta3
-%global namedversion %{version}%{?namedreltag}
+%bcond_with javadoc
 
 Name:             jboss-modules
-Version:          2.1.6
-Release:          1%{namedreltag}.0%{?dist}
+Version:          2.3.0
+Release:          1
 Summary:          A Modular Classloading System
 License:          LGPLv2+
-URL:              https://github.com/jbossas/jboss-modules
-Source0:          https://github.com/jbossas/jboss-modules/archive/%{namedversion}.tar.gz
+URL:              https://github.com/jboss-modules/jboss-modules
+Source0:          https://github.com/jboss-modules/jboss-modules/archive/refs/tags/%{version}.tar.gz
 
 BuildArch:        noarch
+BuildSystem:	maven
 
-BuildRequires:    maven-local
 BuildRequires:    jboss-parent
-BuildRequires:    shrinkwrap
-BuildRequires:    apiviz
 
 %description
 Ths package contains A Modular Classloading System.
 
+%if %{with javadoc}
 %package javadoc
 Summary:          Javadocs for %{name}
 
+%endif
+%if %{with javadoc}
 %description javadoc
 This package contains the API documentation for %{name}.
 
+%endif
 %prep
-%setup -q -n jboss-modules-2.1.6.Final
+%setup -q -n jboss-modules-%{version}
 
-# Conditionally remove dependency on apiviz
-if [ %{?rhel} ]; then
-    %pom_remove_plugin :maven-javadoc-plugin
-fi
-
-# Tries to connect to remote host
-rm src/test/java/org/jboss/modules/MavenResourceTest.java
-
-%build
-%mvn_build
-
-%install
-%mvn_install
+# Tries to connect to a remote host. Tests are skipped, but Maven still
+# parses the file if it is left on the compile path of a test-jar goal.
+rm -f src/test/java/org/jboss/modules/MavenResourceTest.java
 
 %files -f .mfiles
-%dir %{_javadir}/%{name}
 
+%if %{with javadoc}
 %files javadoc -f .mfiles-javadoc
 
-%changelog
-* Thu Sep 12 2013 Marek Goldmann <mgoldman@redhat.com> - 1.3.0-0.1.Beta3
-- Upstream release 1.3.0.Beta3
-
-* Sat Aug 03 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.2.1-3
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
-
-* Tue Jun 18 2013 Mikolaj Izdebski <mizdebsk@redhat.com> - 1.2.1-2
-- Remove unneeded BR
-
-* Tue Jun 04 2013 Marek Goldmann <mgoldman@redhat.com> - 1.2.1-1
-- Upstream release 1.2.1.Final
-- New guidelines
-
-* Thu Feb 14 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.1.1-9
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
-
-* Wed Feb 06 2013 Java SIG <java-devel@lists.fedoraproject.org> - 1.1.1-8
-- Update for https://fedoraproject.org/wiki/Fedora_19_Maven_Rebuild
-- Replace maven BuildRequires with maven-local
-
-* Mon Sep  3 2012 Mikolaj Izdebski <mizdebsk@redhat.com> - 1.1.1-7
-- Conditionally remove dependency on apiviz
-
-* Mon Sep  3 2012 Mikolaj Izdebski <mizdebsk@redhat.com> - 1.1.1-6
-- Remove unneeded BR: maven-injection-plugin
-
-* Fri Jul 20 2012 Marek Goldmann <mgoldman@redhat.com> 1.1.1-4
-- Fixed BR
-
-* Thu Jul 19 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.1.1-4
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
-
-* Mon Mar 05 2012 Marek Goldmann <mgoldman@redhat.com> 1.1.1-3
-- Patch to fix MODULES-128
-
-* Thu Feb 23 2012 Marek Goldmann <mgoldman@redhat.com> 1.1.1-2
-- Relocated jars to _javadir
-
-* Sun Feb 19 2012 Marek Goldmann <mgoldman@redhat.com> 1.1.1-1
-- Upstream release 1.1.1.GA
-
-* Thu Jan 26 2012 Marek Goldmann <mgoldman@redhat.com> 1.1.0-0.3.CR8
-- Upstream release 1.1.0.CR8
-
-* Fri Jan 13 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.1.0-0.2.CR4
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
-
-* Fri Dec 02 2011 Marek Goldmann <mgoldman@redhat.com> 1.1.0-0.1.CR4
-- Upstream release 1.1.0.CR4
-
-* Tue Aug 02 2011 Marek Goldmann <mgoldman@redhat.com> 1.0.2-1
-- Initial packaging
-
+%endif
