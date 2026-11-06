@@ -4,6 +4,7 @@ Name:             jboss-modules
 Version:          2.3.0
 Release:          1
 Summary:          A Modular Classloading System
+Group:            Development/Java
 License:          LGPLv2+
 URL:              https://github.com/jboss-modules/jboss-modules
 Source0:          https://github.com/jboss-modules/jboss-modules/archive/refs/tags/%{version}.tar.gz
